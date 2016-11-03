@@ -6,8 +6,11 @@
 ## Test environment
 * Chrome Emulator
 
+## Sample code
+* [sample.html](https://github.com/onlytigi/javaScriptStudy/blob/master/sample/sample.html) in /sample folder
+
 ## Function
-#### image slider
+### image slider
 function for sliding images
 * param
 
