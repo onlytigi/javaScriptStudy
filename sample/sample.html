@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>tigiui sample page</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <style type="text/css">
+  </style>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="../js/tigiui.js"></script>
+</head>
+
+<body>
+  <ul>
+    <li>
+      <h4>IMAGE SLIDER Sample</h4>
+      <div id="slider">
+        <ul>
+          <li><img src="./image/abstract-1.jpg" alt="0" onerror="$(this).hide();"></li>
+          <li><img src="./image/abstract-2.jpg" alt="1" onerror="$(this).hide();"></li>
+          <li><img src="./image/abstract-3.jpg" alt="2" onerror="$(this).hide();"></li>
+          <li><img src="./image/abstract-4.jpg" alt="3" onerror="$(this).hide();"></li>
+        </ul>
+      </div>
+      <div>
+        <button type="button" id="btn_left" class="btn btn-default"><</button>
+        <button type="button" id="btn_play" class="btn btn-default">PLAY</button>
+        <button type="button" id="btn_stop" class="btn btn-default">STOP</button>
+        <button type="button" id="btn_right" class="btn btn-default">></button>
+      </div>
+    </li>
+  </ul>
+
+
+
+  <script>
+    tigi.ui.slider.init({
+      $area : $("#slider")
+      , width : 770
+      , height : 320
+      , sliderTimerSet : 400
+      , isAutoPlay : true
+      , playTimerSet : 1000
+      , $btnPlay : $("#btn_play")
+      , $btnStop : $("#btn_stop")
+      , $btnLeft : $("#btn_left")
+      , $btnRight : $("#btn_right")
+      , isLoop : false
+    });
+  </script>
+</body>
+
+</html>
