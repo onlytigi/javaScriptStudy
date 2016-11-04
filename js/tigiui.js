@@ -55,15 +55,19 @@
        btnPlaySelector : ".tigiui_slider_btn_play",
        btnStopSelector : ".tigiui_slider_btn_stop",
        btnLeftSelector : ".tigiui_slider_btn_left",
-       btnRightSelector : ".tigiui_slider_btn_right",
-
+       btnRightSelector : ".tigiui_slider_btn_right"
+     },
+     _option : {
        autoSlideObj : null,
        curentIndex : 0,
-			 totalCount : 0
+       previousIndex : 0,
+       totalCount : 0,
+       slideFlag : true
      },
      init : function(p) {
        var slider = this;
        var params = slider._param;
+       var options = slider._option;
        if (p == null || typeof p == 'undefined' || typeof p != 'object') return;
 
        // set params
@@ -75,19 +79,24 @@
          params[key] = value;
        });
 
-       // set loop option
+       // init loop option
        if (params.isLoop) {
-         var $clone = params.$liArea.eq(0).clone();
-         params.$ulArea.append($clone);
+         params.$area.hide();
+         var $cloneFirst = params.$liArea.eq(0).clone();
+         var $cloneLast = params.$liArea.eq(params.$liArea.length - 1).clone();
+         params.$ulArea.append($cloneFirst);
+         params.$ulArea.prepend($cloneLast);
          params.$liArea = params.$area.find("li");
+         //move image to index 1(start image), because index 0 is a clone image for looping
+         slider.moveImageTo(1);
        }
 
-       // set slider
-       params.totalCount = params.$liArea.length;
+       // set slider element and option
+       options.totalCount = params.$liArea.length;
        params.$area.width(params.width)
                          .height(params.height)
                          .css({"overflow" : "hidden"});
-       params.$ulArea.width(params.width * params.totalCount + 40)
+       params.$ulArea.width(params.width * options.totalCount + 40)
                            .height(params.height)
                            .css({"list-style" : "none", "margin" : 0, "padding" : 0});
        params.$liArea.width(params.width)
@@ -129,65 +138,89 @@
        // check init state
        slider.checkState(slider);
      },
-     // move core
-     slideCore : function(distance, duration, $slideArea) {
-				var value = (distance<0 ? "" : "-") + Math.abs(distance).toString();
-
-				if (tigi.util.browser.ie78) {
-					$slideArea.css("margin-left", value +"px");
-				} else {
-					$slideArea.css("-ms-transition-duration", (duration/1000).toFixed(1) + "s");
-					$slideArea.css("-o-transition-duration", (duration/1000).toFixed(1) + "s");
-					$slideArea.css("-moz-transition-duration", (duration/1000).toFixed(1) + "s");
-					$slideArea.css("transition-duration", (duration/1000).toFixed(1) + "s");
-					$slideArea.css("-webkit-transition-duration", (duration/1000).toFixed(1) + "s");
-
-					$slideArea.css("-ms-transform", "translate("+value+"px)");
-					$slideArea.css("-o-transform", "translate("+value+"px)");
-					$slideArea.css("-moz-transform", "translate("+value+"px)");
-					$slideArea.css("transform", "translate("+value+"px)");
-					$slideArea.css("-webkit-transform", "translate3d("+value+"px,0px,0px)");
-				}
-		 },
      // slide to left
      leftSlider : function() {
        var slider = this;
-       var params = this._param;
-       params.curentIndex = Math.max(params.curentIndex - 1, 0);
-       slider.slideCore(params.width * params.curentIndex, params.sliderTimerSet, params.$ulArea);
+       var params = slider._param;
+       var options = slider._option;
+       var firstIndex = 0;
+       var leftSideindex = options.curentIndex - 1;
+       if (!slider.checkSlideFlag(slider)) return;
+       options.previousIndex = options.curentIndex;
+       options.curentIndex = Math.max(leftSideindex, firstIndex);
+       slider.slideCore(params.width * options.curentIndex, params.sliderTimerSet, params.$ulArea);
        slider.checkState(slider);
      },
      // slide to right
      rightSlider : function() {
        var slider = this;
-       var params = this._param;
-       params.curentIndex = Math.min(params.curentIndex + 1, params.totalCount - 1);
-       slider.slideCore(params.width * params.curentIndex, params.sliderTimerSet, params.$ulArea);
+       var params = slider._param;
+       var options = slider._option;
+       var lastIndex = options.totalCount - 1;
+       var rightSideIndex = options.curentIndex + 1;
+       if (!slider.checkSlideFlag(slider)) return;
+       options.previousIndex = options.curentIndex;
+       options.curentIndex = Math.min(rightSideIndex, lastIndex);
+       slider.slideCore(params.width * options.curentIndex, params.sliderTimerSet, params.$ulArea);
        slider.checkState(slider);
+     },
+     // move image for adjusting a visible image
+     moveImageTo : function(toIndex) {
+       var slider = this;
+       var params = slider._param;
+       var options = slider._option;
+       options.curentIndex = toIndex;
+       setTimeout(function(){
+         slider.slideCore(params.width * options.curentIndex, 0, params.$ulArea);
+         params.$area.show();
+       }, params.sliderTimerSet);
+     },
+     // check slider is available or not
+     checkSlideFlag : function (slider) {
+       var params = slider._param;
+       var options = slider._option;
+       if (!options.slideFlag) return false;
+       options.slideFlag = false;
+       setTimeout(function(){
+         options.slideFlag = true;
+       }, params.sliderTimerSet);
+       return true;
      },
      // check current state after sliding
      checkState : function (slider){
-       var params = this._param;
+       var params = slider._param;
+       var options = slider._option;
+       var firstIndex = 0;
+       var lastIndex = options.totalCount - 1;
+       var startIndexInLoop = 1;
+       var endIndexInLoop = options.totalCount - 2;
+       // check for adjusting the loop image
        if (params.isLoop) {
-         if (params.curentIndex == params.totalCount - 1) {
-           params.curentIndex = 0;
-           setTimeout(function(){
-             slider.slideCore(params.width * params.curentIndex, 0, params.$ulArea);
-           }, params.sliderTimerSet);
+         if (options.curentIndex == lastIndex && options.previousIndex == endIndexInLoop) { // from last image to first image (right direction)
+           slider.moveImageTo(startIndexInLoop);
+         } else if (options.curentIndex == firstIndex && options.previousIndex == startIndexInLoop) { // from first image to last image (left direction)
+           slider.moveImageTo(endIndexInLoop);
          }
        }
+       // index check in the callback function
        if (params.callback != null && typeof params.callback != 'undefined') {
-         params.callback(params.curentIndex);
+         if (params.isLoop) {
+           // in Loop, have to consider clone image index
+           params.callback(options.curentIndex - 1);
+         } else {
+           params.callback(options.curentIndex);
+         }
        }
      },
      // auto slide
      autoSlider : {
        play : function(slider){
          var params = slider._param;
-         if (params.autoSlideObj == null) {
+         var options = slider._option;
+         if (options.autoSlideObj == null) {
            console.log("play auto slider");
-           params.autoSlideObj = setInterval(function(){
-             if (params.curentIndex == params.totalCount - 1) {
+           options.autoSlideObj = setInterval(function(){
+             if (options.curentIndex == options.totalCount - 1) {
                params.isAutoPlay = false;
                slider.autoSlider.stop(slider);
                return;
@@ -198,11 +231,32 @@
        },
        stop : function(slider){
           var params = slider._param;
-          if (params.autoSlideObj != null) {
+          var options = slider._option;
+          if (options.autoSlideObj != null) {
             console.log("stop auto slider");
-            clearInterval(params.autoSlideObj);
-            params.autoSlideObj = null;
+            clearInterval(options.autoSlideObj);
+            options.autoSlideObj = null;
           }
+       }
+     },
+     // move core
+     slideCore : function(distance, duration, $slideArea) {
+       var value = (distance<0 ? "" : "-") + Math.abs(distance).toString();
+
+       if (tigi.util.browser.ie78) {
+         $slideArea.css("margin-left", value +"px");
+       } else {
+         $slideArea.css("-ms-transition-duration", (duration/1000).toFixed(1) + "s");
+         $slideArea.css("-o-transition-duration", (duration/1000).toFixed(1) + "s");
+         $slideArea.css("-moz-transition-duration", (duration/1000).toFixed(1) + "s");
+         $slideArea.css("transition-duration", (duration/1000).toFixed(1) + "s");
+         $slideArea.css("-webkit-transition-duration", (duration/1000).toFixed(1) + "s");
+
+         $slideArea.css("-ms-transform", "translate("+value+"px)");
+         $slideArea.css("-o-transform", "translate("+value+"px)");
+         $slideArea.css("-moz-transform", "translate("+value+"px)");
+         $slideArea.css("transform", "translate("+value+"px)");
+         $slideArea.css("-webkit-transform", "translate3d("+value+"px,0px,0px)");
        }
      }
    };

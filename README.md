@@ -26,8 +26,8 @@ function for sliding images
 | sliderTimerSet | set timer for sliding | 400(ms) |
 | isAutoPlay | start with auto play | false |
 | playTimerSet | set timer for the play term | 1000(ms) |
-| isLoop | slider on a loop (right direction) | false |
-| callback| callback function, include current image index param (0, 1, 2, ...) | - |
+| isLoop | slider on a loop (left, right directions) | false |
+| callback| callback function for indicator, include current image index param (0, 1, 2, ...) | - |
 * ex code
 
 ```javascript
