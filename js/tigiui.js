@@ -52,10 +52,10 @@
        isLoop : false,
        callback : null,
 
-       $btnPlay : null,
-       $btnStop : null,
-       $btnLeft : null,
-       $btnRight : null,
+       btnPlaySelector : ".tigiui_slider_btn_play",
+       btnStopSelector : ".tigiui_slider_btn_stop",
+       btnLeftSelector : ".tigiui_slider_btn_left",
+       btnRightSelector : ".tigiui_slider_btn_right",
 
        autoSlideObj : null,
        curentIndex : 0,
@@ -95,29 +95,33 @@
                            .css({"list-style" : "none", "float" : "left"});
 
        // bind event on each button
-       if(params.$btnLeft) params.$btnLeft.click(function(){
+       $(document).on("click", params.btnPlaySelector, function(e){
+         e.preventDefault();
+         console.log("play btn");
+         params.isAutoPlay = true;
+         slider.autoSlider.play(slider);
+       });
+       $(document).on("click", params.btnStopSelector, function(e){
+         e.preventDefault();
+         console.log("stop btn");
+         params.isAutoPlay = false;
+         slider.autoSlider.stop(slider);
+       });
+       $(document).on("click", params.btnLeftSelector, function(e){
+         e.preventDefault();
          console.log("left btn");
          var params = slider._param;
          slider.autoSlider.stop(slider);
          slider.leftSlider();
          if (params.isAutoPlay) slider.autoSlider.play(slider);
        });
-       if(params.$btnRight) params.$btnRight.click(function(){
+       $(document).on("click", params.btnRightSelector, function(e){
+         e.preventDefault();
          console.log("right btn");
          var params = slider._param;
          slider.autoSlider.stop(slider);
          slider.rightSlider();
          if (params.isAutoPlay) slider.autoSlider.play(slider);
-       });
-       if(params.$btnPlay) params.$btnPlay.click(function(){
-         console.log("play btn");
-         params.isAutoPlay = true;
-         slider.autoSlider.play(slider);
-       });
-       if(params.$btnStop) params.$btnStop.click(function(){
-         console.log("stop btn");
-         params.isAutoPlay = false;
-         slider.autoSlider.stop(slider);
        });
 
        // set auto play

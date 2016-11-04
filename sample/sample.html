@@ -27,10 +27,10 @@
         </ul>
       </div>
       <div style="width:770px; margin-top:10px;">
-        <button type="button" id="btn_left" class="btn btn-default"><</button>
-        <button type="button" id="btn_play" class="btn btn-default">PLAY</button>
-        <button type="button" id="btn_stop" class="btn btn-default">STOP</button>
-        <button type="button" id="btn_right" class="btn btn-default">></button>
+        <button type="button" id="btn_left" class="btn btn-default tigiui_slider_btn_left"><</button>
+        <button type="button" id="btn_play" class="btn btn-default tigiui_slider_btn_play">PLAY</button>
+        <button type="button" id="btn_stop" class="btn btn-default tigiui_slider_btn_stop">STOP</button>
+        <button type="button" id="btn_right" class="btn btn-default tigiui_slider_btn_right">></button>
 
         <p id="indicator" style="float:right;"><em class="currentIndex">0</em> / <em class="totalIndex">0</em></p>
       </div>
@@ -48,10 +48,10 @@
       , sliderTimerSet : 400
       , isAutoPlay : true
       , playTimerSet : 1000
-      , $btnPlay : $("#btn_play")
-      , $btnStop : $("#btn_stop")
-      , $btnLeft : $("#btn_left")
-      , $btnRight : $("#btn_right")
+      , btnPlaySelector : ".tigiui_slider_btn_play"
+      , btnStopSelector : ".tigiui_slider_btn_stop"
+      , btnLeftSelector : ".tigiui_slider_btn_left"
+      , btnRightSelector : ".tigiui_slider_btn_right"
       , isLoop : true
       , callback : function(index) {
         //console.log("current image index : " + index);
