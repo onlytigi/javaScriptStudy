@@ -16,11 +16,11 @@ function for sliding images
 
 | name | description | default value |
 |---|---|---|
-| $area | slider div element | - |
-| $btnPlay | slider play btn element | - |
-| $btnStop | slider stop btn element | - |
-| $btnLeft | slider left btn element | - |
-| $btnRight | slider right btn element | - |
+| sliderSelector | slider div selector (have to include "ul" and "ul>li" elements like the ex code) | #slider |
+| btnPlaySelector | slider play btn selector | .tigiui_slider_btn_play |
+| btnStopSelector | slider stop btn selector | .tigiui_slider_btn_stop |
+| btnLeftSelector | slider left btn selector | .tigiui_slider_btn_left |
+| btnRightSelector | slider right btn selector | .tigiui_slider_btn_right |
 | width | image width | - |
 | height | image height | - |
 | sliderTimerSet | set timer for sliding | 400(ms) |
@@ -40,24 +40,24 @@ function for sliding images
   </ul>
 </div>
 <div>
-  <button type="button" id="btn_left"><</button>
-  <button type="button" id="btn_play">PLAY</button>
-  <button type="button" id="btn_stop">STOP</button>
-  <button type="button" id="btn_right">></button>
+  <button type="button" id="btn_left" class="tigiui_slider_btn_left"><</button>
+  <button type="button" id="btn_play" class="tigiui_slider_btn_play">PLAY</button>
+  <button type="button" id="btn_stop" class="tigiui_slider_btn_stop">STOP</button>
+  <button type="button" id="btn_right" class="tigiui_slider_btn_right">></button>
 </div>
 
 <script>
 tigi.ui.slider.init({
-  $area : $("#slider")
+  sliderSelector : "#slider"
+  , btnPlaySelector : ".tigiui_slider_btn_play"
+  , btnStopSelector : ".tigiui_slider_btn_stop"
+  , btnLeftSelector : ".tigiui_slider_btn_left"
+  , btnRightSelector : ".tigiui_slider_btn_right"
   , width : 770
   , height : 320
   , sliderTimerSet : 400
   , isAutoPlay : true
   , playTimerSet : 1000
-  , $btnPlay : $("#btn_play")
-  , $btnStop : $("#btn_stop")
-  , $btnLeft : $("#btn_left")
-  , $btnRight : $("#btn_right")
   , isLoop : true
   , callback : function(index) {
     console.log("current image index : " + index);

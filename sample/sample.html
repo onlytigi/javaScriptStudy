@@ -42,16 +42,16 @@
   <script>
   var imagesTotalCount = $("#slider").find("li").length;
     tigi.ui.slider.init({
-      $area : $("#slider")
+      sliderSelector : "#slider"
+      , btnPlaySelector : ".tigiui_slider_btn_play"
+      , btnStopSelector : ".tigiui_slider_btn_stop"
+      , btnLeftSelector : ".tigiui_slider_btn_left"
+      , btnRightSelector : ".tigiui_slider_btn_right"
       , width : 770
       , height : 320
       , sliderTimerSet : 400
       , isAutoPlay : true
       , playTimerSet : 1000
-      , btnPlaySelector : ".tigiui_slider_btn_play"
-      , btnStopSelector : ".tigiui_slider_btn_stop"
-      , btnLeftSelector : ".tigiui_slider_btn_left"
-      , btnRightSelector : ".tigiui_slider_btn_right"
       , isLoop : true
       , callback : function(index) {
         //console.log("current image index : " + index);

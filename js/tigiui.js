@@ -41,21 +41,18 @@
    */
    I.slider = {
      _param : {
-       $area : null,
-       $ulArea : null,
-       $liArea : null,
+       sliderSelector : "#slider",
+       btnPlaySelector : ".tigiui_slider_btn_play",
+       btnStopSelector : ".tigiui_slider_btn_stop",
+       btnLeftSelector : ".tigiui_slider_btn_left",
+       btnRightSelector : ".tigiui_slider_btn_right",
        width : 0,
        height : 0,
        sliderTimerSet : 400,
        isAutoPlay : false,
        playTimerSet : 1000,
        isLoop : false,
-       callback : null,
-
-       btnPlaySelector : ".tigiui_slider_btn_play",
-       btnStopSelector : ".tigiui_slider_btn_stop",
-       btnLeftSelector : ".tigiui_slider_btn_left",
-       btnRightSelector : ".tigiui_slider_btn_right"
+       callback : null
      },
      _option : {
        autoSlideObj : null,
@@ -72,34 +69,35 @@
 
        // set params
        $.each(p, function(key, value){
-         if (key == '$area') {
-           params.$ulArea = value.find("ul");
-           params.$liArea = value.find("li");
-         }
          params[key] = value;
        });
 
+       // set elements of options
+       options.$area = $(params.sliderSelector).eq(0);
+       options.$ulArea = options.$area.find("ul").eq(0);
+       options.$liArea = options.$ulArea.find("li");
+
        // init loop option
        if (params.isLoop) {
-         params.$area.hide();
-         var $cloneFirst = params.$liArea.eq(0).clone();
-         var $cloneLast = params.$liArea.eq(params.$liArea.length - 1).clone();
-         params.$ulArea.append($cloneFirst);
-         params.$ulArea.prepend($cloneLast);
-         params.$liArea = params.$area.find("li");
+         options.$area.hide();
+         var $cloneFirst = options.$liArea.eq(0).clone();
+         var $cloneLast = options.$liArea.eq(options.$liArea.length - 1).clone();
+         options.$ulArea.append($cloneFirst);
+         options.$ulArea.prepend($cloneLast);
+         options.$liArea = options.$area.find("li");
          //move image to index 1(start image), because index 0 is a clone image for looping
          slider.moveImageTo(1);
        }
 
        // set slider element and option
-       options.totalCount = params.$liArea.length;
-       params.$area.width(params.width)
+       options.totalCount = options.$liArea.length;
+       options.$area.width(params.width)
                          .height(params.height)
                          .css({"overflow" : "hidden"});
-       params.$ulArea.width(params.width * options.totalCount + 40)
+       options.$ulArea.width(params.width * options.totalCount + 40)
                            .height(params.height)
                            .css({"list-style" : "none", "margin" : 0, "padding" : 0});
-       params.$liArea.width(params.width)
+       options.$liArea.width(params.width)
                            .height(params.height)
                            .css({"list-style" : "none", "float" : "left"});
 
@@ -148,7 +146,7 @@
        if (!slider.checkSlideFlag(slider)) return;
        options.previousIndex = options.curentIndex;
        options.curentIndex = Math.max(leftSideindex, firstIndex);
-       slider.slideCore(params.width * options.curentIndex, params.sliderTimerSet, params.$ulArea);
+       slider.slideCore(params.width * options.curentIndex, params.sliderTimerSet, options.$ulArea);
        slider.checkState(slider);
      },
      // slide to right
@@ -161,7 +159,7 @@
        if (!slider.checkSlideFlag(slider)) return;
        options.previousIndex = options.curentIndex;
        options.curentIndex = Math.min(rightSideIndex, lastIndex);
-       slider.slideCore(params.width * options.curentIndex, params.sliderTimerSet, params.$ulArea);
+       slider.slideCore(params.width * options.curentIndex, params.sliderTimerSet, options.$ulArea);
        slider.checkState(slider);
      },
      // move image for adjusting a visible image
@@ -171,8 +169,8 @@
        var options = slider._option;
        options.curentIndex = toIndex;
        setTimeout(function(){
-         slider.slideCore(params.width * options.curentIndex, 0, params.$ulArea);
-         params.$area.show();
+         slider.slideCore(params.width * options.curentIndex, 0, options.$ulArea);
+         options.$area.show();
        }, params.sliderTimerSet);
      },
      // check slider is available or not
