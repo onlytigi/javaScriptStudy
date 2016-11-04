@@ -50,6 +50,7 @@
        isAutoPlay : false,
        playTimerSet : 1000,
        isLoop : false,
+       callback : null,
 
        $btnPlay : null,
        $btnStop : null,
@@ -121,6 +122,8 @@
 
        // set auto play
        if (params.isAutoPlay) slider.autoSlider.play(slider);
+       // check init state
+       slider.checkState(slider);
      },
      // move core
      slideCore : function(distance, duration, $slideArea) {
@@ -148,6 +151,7 @@
        var params = this._param;
        params.curentIndex = Math.max(params.curentIndex - 1, 0);
        slider.slideCore(params.width * params.curentIndex, params.sliderTimerSet, params.$ulArea);
+       slider.checkState(slider);
      },
      // slide to right
      rightSlider : function() {
@@ -167,6 +171,9 @@
              slider.slideCore(params.width * params.curentIndex, 0, params.$ulArea);
            }, params.sliderTimerSet);
          }
+       }
+       if (params.callback != null && typeof params.callback != 'undefined') {
+         params.callback(params.curentIndex);
        }
      },
      // auto slide
@@ -196,3 +203,10 @@
      }
    };
 }());
+if (tigi.util.browser.chrome) {
+  console.log('%chttps://github.com/onlytigi/javaScriptStudy', 'font-size:20px;color:#ff9494;padding:2px 0px;border-radius:4px;background:#fff;');
+  console.log('%cby tigi', 'font-size:14px;color:#ff1414;padding:2px 0px;border-radius:4px;background:#fff;');
+} else {
+  console.log('https://onlytigi.github.io');
+  console.log('by tigi');
+}

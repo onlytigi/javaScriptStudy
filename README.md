@@ -27,6 +27,7 @@ function for sliding images
 | isAutoPlay | start with auto play | false |
 | playTimerSet | set timer for the play term | 1000(ms) |
 | isLoop | slider on a loop (right direction) | false |
+| callback| callback function, include current image index param (0, 1, 2, ...) | - |
 * ex code
 
 ```javascript
@@ -58,6 +59,9 @@ tigi.ui.slider.init({
   , $btnLeft : $("#btn_left")
   , $btnRight : $("#btn_right")
   , isLoop : true
+  , callback : function(index) {
+    console.log("current image index : " + index);
+  }
 });
 </script>
 ```
