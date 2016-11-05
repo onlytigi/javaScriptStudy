@@ -10,7 +10,7 @@
 * [sample.html](https://github.com/onlytigi/javaScriptStudy/blob/master/sample/sample.html) in /sample folder
 
 ## Function
-### image slider
+### <p style="color:#f00">- image slider</p>
 function for sliding images
 * param
 
