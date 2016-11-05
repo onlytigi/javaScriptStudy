@@ -65,7 +65,7 @@
        var slider = this;
        var params = slider._param;
        var options = slider._option;
-       if (p == null || typeof p == 'undefined' || typeof p != 'object') return;
+       if (p == null || typeof p == 'undefined' || typeof p != 'object') return null;
 
        // set params
        $.each(p, function(key, value){
@@ -76,17 +76,17 @@
        options.$area = $(params.sliderSelector).eq(0);
        if (options.$area.length < 1) {
          console.log("sliderSelector is required");
-         return;
+         return null;
        }
        options.$ulArea = options.$area.find("ul").eq(0);
        if (options.$ulArea.length < 1) {
          console.log("sliderSelector have to include a 'ul' element");
-         return;
+         return null;
        }
        options.$liArea = options.$ulArea.find("li");
        if (options.$liArea.length < 1) {
          console.log("sliderSelector have to include at least one 'ul>li' element");
-         return;
+         return null;
        }
 
        // init loop option
@@ -138,10 +138,7 @@
          $(document).on("click", params.btnLeftSelector, function(e){
            e.preventDefault();
            console.log("left btn");
-           var params = slider._param;
-           slider.autoStopSlider();
            slider.leftSlider();
-           if (params.isAutoPlay) slider.autoPlaySlider();
          });
        if (params.btnRightSelector != null
          && params.btnRightSelector.trim() != ""
@@ -149,16 +146,14 @@
          $(document).on("click", params.btnRightSelector, function(e){
            e.preventDefault();
            console.log("right btn");
-           var params = slider._param;
-           slider.autoStopSlider();
            slider.rightSlider();
-           if (params.isAutoPlay) slider.autoPlaySlider();
          });
 
        // set auto play
        if (params.isAutoPlay) slider.autoPlaySlider();
        // check init state
        slider.checkState();
+       return this;
      }
      // auto play
      , autoPlaySlider : function() {
@@ -196,10 +191,12 @@
        var firstIndex = 0;
        var leftSideindex = options.curentIndex - 1;
        if (!slider.checkSlideFlag()) return;
+       slider.autoStopSlider();
        options.previousIndex = options.curentIndex;
        options.curentIndex = Math.max(leftSideindex, firstIndex);
        slider.slideCore(params.width * options.curentIndex, params.sliderTimerSet, options.$ulArea);
        slider.checkState();
+       if (params.isAutoPlay) slider.autoPlaySlider();
      }
      // slide to right
      , rightSlider : function() {
@@ -209,10 +206,34 @@
        var lastIndex = options.totalCount - 1;
        var rightSideIndex = options.curentIndex + 1;
        if (!slider.checkSlideFlag()) return;
+       slider.autoStopSlider();
        options.previousIndex = options.curentIndex;
        options.curentIndex = Math.min(rightSideIndex, lastIndex);
        slider.slideCore(params.width * options.curentIndex, params.sliderTimerSet, options.$ulArea);
        slider.checkState();
+       if (params.isAutoPlay) slider.autoPlaySlider();
+     }
+     // move image to the index
+     , moveSlider : function(toIndex) {
+       var slider = this;
+       var params = slider._param;
+       var options = slider._option;
+       if (!slider.checkSlideFlag()) return;
+       slider.autoStopSlider();
+       if (params.isLoop) toIndex += 1;
+       if (options.curentIndex > toIndex) {               // move to left
+         var firstIndex = 0;
+         options.previousIndex = options.curentIndex;
+         options.curentIndex = Math.max(toIndex, firstIndex);
+       } else if (options.curentIndex < toIndex) {        // move to right
+         var lastIndex = options.totalCount - 1;
+         options.previousIndex = options.curentIndex;
+         options.curentIndex = Math.min(toIndex, lastIndex);
+       } else if (options.curentIndex == toIndex) {       // current index
+       }
+       slider.slideCore(params.width * options.curentIndex, params.sliderTimerSet, options.$ulArea);
+       slider.checkState();
+       if (params.isAutoPlay) slider.autoPlaySlider();
      }
      // move image for adjusting a visible image
      , adjustImageTo : function(toIndex) {
@@ -225,7 +246,7 @@
          options.$area.show();
        }, params.sliderTimerSet);
      }
-     // check slider is available or not
+     // check slider is available or not before sliding
      , checkSlideFlag : function () {
        var slider = this;
        var params = slider._param;

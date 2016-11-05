@@ -28,6 +28,17 @@ function for sliding images
 | playTimerSet | set timer for the play term | 1000(ms) |
 | isLoop | slider on a loop (left, right directions) | false |
 | callback| callback function for indicator, include current image index param (0, 1, 2, ...) | - |
+* methods
+
+| name | description |
+|-|-|
+| init | init a slider |
+| autoPlaySlider | play the auto slider |
+| autoStopSlider | stop the auto slider |
+| leftSlider | move to left |
+| rightSlider | move to right |
+| moveSlider | move to the index of param |
+
 * ex code
 
 ```javascript
@@ -45,9 +56,15 @@ function for sliding images
   <button type="button" id="btn_stop" class="tigiui_slider_btn_stop">STOP</button>
   <button type="button" id="btn_right" class="tigiui_slider_btn_right">></button>
 </div>
+<div>
+  <button type="button" id="btn_to_0" class="btn_index">1</button>
+  <button type="button" id="btn_to_1" class="btn_index">2</button>
+  <button type="button" id="btn_to_2" class="btn_index">3</button>
+  <button type="button" id="btn_to_3" class="btn_index">4</button>
+</div>
 
 <script>
-tigi.ui.slider.init({
+var slider = tigi.ui.slider.init({
   sliderSelector : "#slider"
   , btnPlaySelector : ".tigiui_slider_btn_play"
   , btnStopSelector : ".tigiui_slider_btn_stop"
@@ -61,6 +78,24 @@ tigi.ui.slider.init({
   , isLoop : true
   , callback : function(index) {
     console.log("current image index : " + index);
+  }
+});
+$(".btn_index").click(function() {
+  var id = $(this).attr("id");
+  switch (id) {
+    case "btn_to_0":
+      slider.moveSlider(0);
+      break;
+    case "btn_to_1":
+      slider.moveSlider(1);
+      break;
+    case "btn_to_2":
+      slider.moveSlider(2);
+      break;
+    case "btn_to_3":
+      slider.moveSlider(3);
+      break;
+    default:
   }
 });
 </script>

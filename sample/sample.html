@@ -32,7 +32,14 @@
         <button type="button" id="btn_stop" class="btn btn-default tigiui_slider_btn_stop">STOP</button>
         <button type="button" id="btn_right" class="btn btn-default tigiui_slider_btn_right">></button>
 
-        <p id="indicator" style="float:right;"><em class="currentIndex">0</em> / <em class="totalIndex">0</em></p>
+        <p id="indicator" style="margin-left:250px;float:right;"><em class="currentIndex">0</em> / <em class="totalIndex">0</em></p>
+
+        <div style="margin-left:50px;float:right;">
+        <button type="button" id="btn_to_0" class="btn btn-default btn_index">1</button>
+        <button type="button" id="btn_to_1" class="btn btn-default btn_index">2</button>
+        <button type="button" id="btn_to_2" class="btn btn-default btn_index">3</button>
+        <button type="button" id="btn_to_3" class="btn btn-default btn_index">4</button>
+        </div>
       </div>
     </li>
   </ul>
@@ -41,7 +48,7 @@
 
   <script>
   var imagesTotalCount = $("#slider").find("li").length;
-    tigi.ui.slider.init({
+  var slider = tigi.ui.slider.init({
       sliderSelector : "#slider"
       , btnPlaySelector : ".tigiui_slider_btn_play"
       , btnStopSelector : ".tigiui_slider_btn_stop"
@@ -60,6 +67,24 @@
         $indicator.children(".totalIndex").text(imagesTotalCount);
       }
     });
+  $(".btn_index").click(function() {
+    var id = $(this).attr("id");
+    switch (id) {
+      case "btn_to_0":
+        slider.moveSlider(0);
+        break;
+      case "btn_to_1":
+        slider.moveSlider(1);
+        break;
+      case "btn_to_2":
+        slider.moveSlider(2);
+        break;
+      case "btn_to_3":
+        slider.moveSlider(3);
+        break;
+      default:
+    }
+  });
   </script>
 </body>
 
