@@ -11,6 +11,8 @@
 
 ## Function List
 1. image slider [description](#image-slider)
+  - to slide the image list
+
 
 
 ---
