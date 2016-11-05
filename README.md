@@ -23,10 +23,10 @@ function for sliding images
 | name | description | default value |
 |---|---|---|
 | sliderSelector | slider div selector (have to include "ul" and "ul>li" elements like the ex code) | #slider |
-| btnPlaySelector | slider play btn selector | .tigiui_slider_btn_play |
-| btnStopSelector | slider stop btn selector | .tigiui_slider_btn_stop |
-| btnLeftSelector | slider left btn selector | .tigiui_slider_btn_left |
-| btnRightSelector | slider right btn selector | .tigiui_slider_btn_right |
+| btnPlaySelector | slider play btn selector | - |
+| btnStopSelector | slider stop btn selector | - |
+| btnLeftSelector | slider left btn selector | - |
+| btnRightSelector | slider right btn selector | - |
 | width | image width | - |
 | height | image height | - |
 | sliderTimerSet | set timer for sliding | 400(ms) |
