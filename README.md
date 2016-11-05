@@ -9,8 +9,12 @@
 ## Sample code
 * [sample.html](https://github.com/onlytigi/javaScriptStudy/blob/master/sample/sample.html) in /sample folder
 
-## Function
-### <p style="color:#f00">- image slider</p>
+## Function List
+1. image slider [description](#-image-slider)
+
+
+---
+### image slider
 function for sliding images
 * param
 
