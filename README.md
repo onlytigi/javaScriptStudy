@@ -28,10 +28,11 @@ function for sliding images
 | playTimerSet | set timer for the play term | 1000(ms) |
 | isLoop | slider on a loop (left, right directions) | false |
 | callback| callback function for indicator, include current image index param (0, 1, 2, ...) | - |
+
 * methods
 
 | name | description |
-|-|-|
+|---|---|
 | init | init a slider |
 | autoPlaySlider | play the auto slider |
 | autoStopSlider | stop the auto slider |
