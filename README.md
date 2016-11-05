@@ -10,7 +10,7 @@
 * [sample.html](https://github.com/onlytigi/javaScriptStudy/blob/master/sample/sample.html) in /sample folder
 
 ## Function List
-1. image slider [description](#-image-slider)
+1. image slider [description](#image-slider)
 
 
 ---
