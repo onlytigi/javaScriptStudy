@@ -33,6 +33,7 @@ function for sliding images
 | isAutoPlay | start with auto play | false |
 | playTimerSet | set timer for the play term | 1000(ms) |
 | isLoop | slider on a loop (left, right directions) | false |
+| isDebug | debug mode, console log | false |
 | callback| callback function for indicator, include current image index param (0, 1, 2, ...) | - |
 
 * methods
@@ -83,6 +84,7 @@ var slider = tigi.ui.slider.init({
   , isAutoPlay : true
   , playTimerSet : 1000
   , isLoop : true
+  , isDebug : true
   , callback : function(index) {
     console.log("current image index : " + index);
   }

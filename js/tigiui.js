@@ -53,6 +53,7 @@
        , playTimerSet : 1000
        , isLoop : false
        , callback : null
+       , isDebug : false
      }
      , _option : {
        autoSlideObj : null
@@ -75,17 +76,17 @@
        // set elements of options
        options.$area = $(params.sliderSelector).eq(0);
        if (options.$area.length < 1) {
-         console.log("sliderSelector is required");
+         if (params.isDebug) console.log("sliderSelector is required");
          return null;
        }
        options.$ulArea = options.$area.find("ul").eq(0);
        if (options.$ulArea.length < 1) {
-         console.log("sliderSelector have to include a 'ul' element");
+         if (params.isDebug) console.log("sliderSelector have to include a 'ul' element");
          return null;
        }
        options.$liArea = options.$ulArea.find("li");
        if (options.$liArea.length < 1) {
-         console.log("sliderSelector have to include at least one 'ul>li' element");
+         if (params.isDebug) console.log("sliderSelector have to include at least one 'ul>li' element");
          return null;
        }
 
@@ -125,7 +126,7 @@
          && typeof params.btnPlaySelector == 'string')
          $(document).on("click", params.btnPlaySelector, function(e){
            e.preventDefault();
-           console.log("play btn");
+           if (params.isDebug) console.log("play btn");
            params.isAutoPlay = true;
            slider.autoPlaySlider();
          });
@@ -134,7 +135,7 @@
          && typeof params.btnStopSelector == 'string')
          $(document).on("click", params.btnStopSelector, function(e){
            e.preventDefault();
-           console.log("stop btn");
+           if (params.isDebug) console.log("stop btn");
            params.isAutoPlay = false;
            slider.autoStopSlider();
          });
@@ -143,7 +144,7 @@
          && typeof params.btnLeftSelector == 'string')
          $(document).on("click", params.btnLeftSelector, function(e){
            e.preventDefault();
-           console.log("left btn");
+           if (params.isDebug) console.log("left btn");
            slider.leftSlider();
          });
        if (params.btnRightSelector != null
@@ -151,7 +152,7 @@
          && typeof params.btnRightSelector == 'string')
          $(document).on("click", params.btnRightSelector, function(e){
            e.preventDefault();
-           console.log("right btn");
+           if (params.isDebug) console.log("right btn");
            slider.rightSlider();
          });
 
@@ -167,7 +168,7 @@
        var params = slider._param;
        var options = slider._option;
        if (options.autoSlideObj == null) {
-         console.log("play auto slider");
+         if (params.isDebug) console.log("play auto slider");
          options.autoSlideObj = setInterval(function(){
            if (options.curentIndex == options.totalCount - 1) {
              params.isAutoPlay = false;
@@ -184,7 +185,7 @@
        var params = slider._param;
        var options = slider._option;
        if (options.autoSlideObj != null) {
-         console.log("stop auto slider");
+         if (params.isDebug) console.log("stop auto slider");
          clearInterval(options.autoSlideObj);
          options.autoSlideObj = null;
        }
