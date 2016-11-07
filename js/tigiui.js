@@ -1,6 +1,6 @@
 /**
  * tigiui - by tigi
- * modified : 2016/11/02
+ * modified : 2016/11/07
  * dependency : jquery
  */
 (function(){
@@ -59,7 +59,7 @@
        , curentIndex : 0
        , previousIndex : 0
        , totalCount : 0
-       , slideFlag : true
+       , slideFlag : false
      }
      , init : function(p) {
        var slider = this;
@@ -89,16 +89,22 @@
          return null;
        }
 
-       // init loop option
+       // init loop option and slideFlag to allow sliding
        if (params.isLoop) {
-         options.$area.hide();
          var $cloneFirst = options.$liArea.eq(0).clone();
          var $cloneLast = options.$liArea.eq(options.$liArea.length - 1).clone();
+         $cloneLast.hide();
          options.$ulArea.append($cloneFirst);
          options.$ulArea.prepend($cloneLast);
          options.$liArea = options.$area.find("li");
          //move image to index 1(start image), because index 0 is a clone image for looping
          slider.adjustImageTo(1);
+         setTimeout(function(){
+           options.slideFlag = true;
+           $cloneLast.show();
+         }, params.sliderTimerSet);
+       } else {
+         options.slideFlag = true;
        }
 
        // set slider element and option
@@ -243,7 +249,6 @@
        options.curentIndex = toIndex;
        setTimeout(function(){
          slider.slideCore(params.width * options.curentIndex, 0, options.$ulArea);
-         options.$area.show();
        }, params.sliderTimerSet);
      }
      // check slider is available or not before sliding
