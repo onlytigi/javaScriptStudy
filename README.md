@@ -1,4 +1,5 @@
 # tigiui
+[![Build Status](https://travis-ci.org/tigi44/tigi.ui.svg?branch=master)](https://travis-ci.org/tigi44/tigi.ui)
 
 ## Dependency
 * jquery: lastest version
