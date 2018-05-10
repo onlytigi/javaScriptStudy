@@ -54,13 +54,15 @@
        , isLoop : false
        , callback : null
        , isDebug : false
+       , isSwipe : false
+       , swipeThreshold : 100
      }
      , _option : {
        autoSlideObj : null
        , curentIndex : 0
        , previousIndex : 0
        , totalCount : 0
-       , slideFlag : false
+       , readyToSlide : false
      }
      , init : function(p) {
        var slider = this;
@@ -90,7 +92,7 @@
          return null;
        }
 
-       // init loop option and slideFlag to allow sliding
+       // init loop option and readyToSlide to allow sliding
        if (params.isLoop) {
          var $cloneFirst = options.$liArea.eq(0).clone();
          var $cloneLast = options.$liArea.eq(options.$liArea.length - 1).clone();
@@ -101,11 +103,11 @@
          //move image to index 1(start image), because index 0 is a clone image for looping
          slider.adjustImageTo(1);
          setTimeout(function(){
-           options.slideFlag = true;
+           options.readyToSlide = true;
            $cloneLast.show();
          }, params.sliderTimerSet);
        } else {
-         options.slideFlag = true;
+         options.readyToSlide = true;
        }
 
        // set slider element and option
@@ -158,9 +160,47 @@
 
        // set auto play
        if (params.isAutoPlay) slider.autoPlaySlider();
+
+       // set swipe
+       if (params.isSwipe) {
+         options.$area.swipe({
+   				triggerOnTouchleave : false,
+   				swipeStatus : slider.swipeStatus,
+   				allowPageScroll : "vertical",
+   				threshold : params.swipeThreshold
+   			});
+       }
+
        // check init state
        slider.checkState();
        return this;
+     }
+     // swipe
+     , swipeStatus : function(event, phase, direction, distance) {
+       var slider = tigi.ui.slider;
+       var params = slider._param;
+       var options = slider._option;
+       if (direction=="left" || direction=="right") {
+         if (params.isDebug) console.log("slider swipe (direction : " + direction + ", phase : " + phase + ")");
+         if (phase=="move") {
+           slider.autoStopSlider();
+           if (direction == "left") {
+             slider.slideCore(params.width * options.curentIndex + distance, 0, options.$ulArea);
+           } else {
+             slider.slideCore(params.width * options.curentIndex - distance, 0, options.$ulArea);
+           }
+         } else if ( phase == "cancel"){
+           var toIndex = options.curentIndex;
+           if (params.isLoop) toIndex -= 1;
+           slider.moveSlider(toIndex);
+         } else if ( phase =="end" ){
+           if (direction == "left"){
+             slider.rightSlider();
+           } else {
+             slider.leftSlider();
+           }
+          }
+       }
      }
      // auto play
      , autoPlaySlider : function() {
@@ -197,7 +237,7 @@
        var options = slider._option;
        var firstIndex = 0;
        var leftSideindex = options.curentIndex - 1;
-       if (!slider.checkSlideFlag()) return;
+       if (!slider.isReadyToSlide()) return;
        slider.autoStopSlider();
        options.previousIndex = options.curentIndex;
        options.curentIndex = Math.max(leftSideindex, firstIndex);
@@ -212,7 +252,7 @@
        var options = slider._option;
        var lastIndex = options.totalCount - 1;
        var rightSideIndex = options.curentIndex + 1;
-       if (!slider.checkSlideFlag()) return;
+       if (!slider.isReadyToSlide()) return;
        slider.autoStopSlider();
        options.previousIndex = options.curentIndex;
        options.curentIndex = Math.min(rightSideIndex, lastIndex);
@@ -225,7 +265,7 @@
        var slider = this;
        var params = slider._param;
        var options = slider._option;
-       if (!slider.checkSlideFlag()) return;
+       if (!slider.isReadyToSlide()) return;
        slider.autoStopSlider();
        if (params.isLoop) toIndex += 1;
        if (options.curentIndex > toIndex) {               // move to left
@@ -253,14 +293,14 @@
        }, params.sliderTimerSet);
      }
      // check slider is available or not before sliding
-     , checkSlideFlag : function () {
+     , isReadyToSlide : function () {
        var slider = this;
        var params = slider._param;
        var options = slider._option;
-       if (!options.slideFlag) return false;
-       options.slideFlag = false;
+       if (!options.readyToSlide) return false;
+       options.readyToSlide = false;
        setTimeout(function(){
-         options.slideFlag = true;
+         options.readyToSlide = true;
        }, params.sliderTimerSet);
        return true;
      }
@@ -314,9 +354,9 @@
    };
 }());
 if (tigi.util.browser.chrome) {
-  console.log('%chttps://github.com/onlytigi/javaScriptStudy', 'font-size:20px;color:#ff9494;padding:2px 0px;border-radius:4px;background:#fff;');
+  console.log('%chttps://github.com/tigi44/tigi.ui', 'font-size:20px;color:#ff9494;padding:2px 0px;border-radius:4px;background:#fff;');
   console.log('%cby tigi', 'font-size:14px;color:#ff1414;padding:2px 0px;border-radius:4px;background:#fff;');
 } else {
-  console.log('https://onlytigi.github.io');
+  console.log('https://github.com/tigi44/tigi.ui');
   console.log('by tigi');
 }

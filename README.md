@@ -1,13 +1,14 @@
 # tigiui
 
 ## Dependency
-* jquery: lastest version
+* jquery : 3.1.1
+* [TouchSwipe-Jquery-Plugin](https://github.com/mattbryson/TouchSwipe-Jquery-Plugin) : 1.6
 
 ## Test environment
 * Chrome Emulator
 
 ## Sample code
-* [sample.html](https://github.com/onlytigi/javaScriptStudy/blob/master/sample/sample.html) in /sample folder
+* [sample.html](https://github.com/tigi44/tigi.ui/blob/master/sample/sample.html) in /sample folder
 
 ## Function List
 1. image slider [description](#image-slider)
@@ -34,6 +35,8 @@ function for sliding images
 | playTimerSet | set timer for the play term | 1000(ms) |
 | isLoop | slider on a loop (left, right directions) | false |
 | isDebug | debug mode, console log | false |
+| isSwipe | swipe the slider | false |
+| swipeThreshold | swipe threshold | 100 |
 | callback| callback function for indicator, include current image index param (0, 1, 2, ...) | - |
 
 * methods
@@ -71,6 +74,9 @@ function for sliding images
   <button type="button" id="btn_to_3" class="btn_index">4</button>
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="../js/jquery.touchSwipe.min.js"></script>
+<script src="../js/tigiui.js"></script>
 <script>
 var slider = tigi.ui.slider.init({
   sliderSelector : "#slider"
@@ -85,6 +91,8 @@ var slider = tigi.ui.slider.init({
   , playTimerSet : 1000
   , isLoop : true
   , isDebug : true
+  , isSwipe : true
+  , swipeThreshold : 100
   , callback : function(index) {
     console.log("current image index : " + index);
   }
